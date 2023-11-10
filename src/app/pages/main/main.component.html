@@ -1,0 +1,50 @@
+<app-header></app-header>
+
+<div class="row mt-3">
+    <div class="col-lg-6 offset-lg-3">
+        <div class="text-center w-100">
+            <div class="form-floating text-center">
+                <select #image (change)="onSelected(image.value)" class="form-select w-50" id="floatingSelect">
+                  <option selected value="default">Select Image</option>
+                  <option *ngFor="let option of imagesList" value="{{option.url}}">{{option.name}}</option>
+                </select>
+                <label for="floatingSelect">Image selection</label>
+              </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-body rounded text-center card-image">
+                <img class="w-50 h-50" src="{{imageSelected ? imageSelected : imageDefault}}" alt="">
+            </div>
+        </div>
+        <div class="text-center mt-3 w-100">
+            <!-- <button type="button" (click)="undo()" [disabled]="lastDegrees.length < 1" class="btn btn-primary">Undo</button>
+            <button type="button" (click)="redo()" [disabled]="!redoEnabled" class="btn btn-primary">Redo</button> -->
+        </div>
+        <div *ngIf="imageSelected" class="input-group input-group-sm mb-3 mt-3 d-flex">
+            <label class="form-label" for="">Link to Image: </label>
+            <a class="linkToImage" href="{{imageSelected}}">{{imageSelected}}</a>
+            <form [formGroup]="rotateDegreesForm" class="d-flex mt-2">
+                <label for="rotateInput" class="rotateLabel form-label d-flex justify-content-center mr-3">Degrees</label>
+                <input #rotateInput type="number" class="form-control" formControlName="degrees" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </form>
+            <span class="text-danger d-flex justify-content-center"
+            *ngIf="(rotateDegreesForm.controls['degrees'].touched) && rotateDegreesForm.controls['degrees'].errors">
+            Required field and number has to be between 0 and 360
+            </span>
+        </div>
+        <div *ngIf="imageSelected">
+            <label for="brightness" class="form-label">Brightness</label>
+            <input #brightness type="range" (change)="brightnessChange($event)"
+            class="form-range" min="-100" value="0" max="100" id="brightness">
+            <label for="contrast" class="form-label">Contrast</label>
+            <input #contrast type="range" (change)="contrastChange($event)"
+            class="form-range" min="-100" value="0" max="100" id="contrast">
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <button #submit type="button" (click)="submitChanges()" [disabled]="rotateDegreesForm.controls['degrees'].errors || !imageSelected"
+            id="button-submit" class=" btn btn-primary mt-4 w-50 text-center">Submit changes</button>
+        </div>
+    </div>
+
+</div>
